@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",                    // مهم لـ NestJS
+    "moduleResolution": "node",              // حل مشاكل imports
+    "target": "ES2023",                      // أحدث إصدار JS
+    // "esModuleInterop": true,                 // يسمح بالـ default + named imports
+    "allowSyntheticDefaultImports": true,    // يسمح بالـ default import من مكتبات TS
+    "emitDecoratorMetadata": true,           // ضروري للـ decorators
+    "experimentalDecorators": true,          // ضروري للـ decorators
+    "declaration": true,                     // يصدر ملفات .d.ts
+    "sourceMap": true,                        // ملفات sourcemap للـ debug
+    "outDir": "./dist",                       // مكان الملفات المترجمة
+    "baseUrl": "./",
+    "incremental": true,                      // ترجمة أسرع
+    "skipLibCheck": true,                     // تجاهل type errors في node_modules (يحل مشاكل decorators)
+    "strictNullChecks": true,                 // التحقق من null/undefined
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "noFallthroughCasesInSwitch": false,
+    // "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "strict": true   
+  },
+  "exclude": ["node_modules", "dist"]
+}
