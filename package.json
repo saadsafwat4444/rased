@@ -1,0 +1,12 @@
+{
+  "name": "rased",
+  "version": "1.0.0",
+  "description": "Full-stack application",
+  "scripts": {
+    "start": "cd backend && npm run start:prod",
+    "build": "cd backend && npm run build"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
