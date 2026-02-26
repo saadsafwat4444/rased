@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CreateReportDto } from '../dto/CreateReportDto';
-import { admin, db } from 'firebase/firebase-admin';
+import { admin, db } from '../../../src/firebase/firebase-admin';
 
 @Injectable()
 export class ReportsService {

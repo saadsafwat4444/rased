@@ -1,7 +1,7 @@
 // createAdmin.ts
 // import { admin, db } from '';
 
-import { admin, db } from './firebase/firebase-admin';
+import { admin, db } from '../src/firebase/firebase-admin';
 
 // import { admin, db } from 'firebase/firebase-admin';
 

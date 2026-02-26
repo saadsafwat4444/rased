@@ -4,7 +4,7 @@ import {
   Injectable,
   ForbiddenException,
 } from '@nestjs/common';
-import { admin } from '../../firebase/firebase-admin';
+import { admin } from '../../src/firebase/firebase-admin';
 
 interface MyDecodedIdToken {
   uid: string;

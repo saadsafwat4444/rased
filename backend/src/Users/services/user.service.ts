@@ -1,6 +1,6 @@
 // src/users/users.service.ts
 import { Injectable } from '@nestjs/common';
-import { admin } from 'firebase/firebase-admin'; // import admin SDK
+import { admin } from '../../../src/firebase/firebase-admin'; // import admin SDK
 
 @Injectable()
 export class UsersService {

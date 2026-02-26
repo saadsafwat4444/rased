@@ -1,5 +1,5 @@
 import * as functions from 'firebase-functions';
-import { admin } from '../firebase/firebase-admin';
+import { admin } from '../src/firebase/firebase-admin';
 
 // TypeScript + ESLint-safe Cloud Function
 export const assignUserRole = functions.auth
