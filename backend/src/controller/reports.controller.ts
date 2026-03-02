@@ -16,7 +16,6 @@ export class ReportsController {
     @Body() dto: CreateReportDto,
     @Req() req: RequestWithUser,
   ) {
-    // لو عايز تاكد reporterId من الـ token
     dto.reporterId = req.user.uid;
     return this.reportsService.createReport(dto);
   }

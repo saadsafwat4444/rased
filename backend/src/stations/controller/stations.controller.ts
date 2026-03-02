@@ -17,7 +17,7 @@ import { UpdateStationDto } from '../dto/update-station.dto';
 import { RolesGuard } from 'src/Guard/roles.guard';
 
 @Controller('stations')
-@UseGuards(new RolesGuard(['admin']))
+// @UseGuards(new RolesGuard(['admin']))
 export class StationsController {
   constructor(private readonly service: StationsService) {}
 

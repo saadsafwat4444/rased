@@ -19,11 +19,10 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
-
+// import 'dotenv/config';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // CORS للـ Frontend بعد ما ترفعه، مؤقتًا true أثناء التطوير
   app.enableCors({
     origin: process.env.FRONTEND_URL || true,
     credentials: true,
