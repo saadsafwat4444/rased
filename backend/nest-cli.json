@@ -4,6 +4,11 @@
   "sourceRoot": "src",
   "compilerOptions": {
     "deleteOutDir": true,
-       "assets": ["src/firebase/serviceAccountKey.json"]
-  }
+        "assets": [
+      {
+        "include": "src/firebase/serviceAccountKey.json",
+        "outDir": "dist/src/firebase"
+      }
+    ]
+}
 }
