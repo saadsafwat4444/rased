@@ -96,28 +96,11 @@ export default function UserManagement() {
     };
 
     try {
-      const res = await apiFetch('/users/add-supervisor', {
+      const result = await apiFetch('/users/add-supervisor', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(supervisorData),
       });
-
-      if (!res.ok) {
-        const errorText = await res.text();
-        console.error("Failed to add supervisor - Response text:", errorText);
-        alert("Failed to add supervisor: " + errorText);
-        return;
-      }
-
-      let result;
-      try {
-        const responseText = await res.json();
-        result = responseText;
-      } catch (jsonError) {
-        console.error("JSON parse error:", jsonError);
-        alert("Server response is not valid JSON");
-        return;
-      }
 
       // setFormData({ fullName: "", email: "", password: "", phone: "", stationScope: [] });
       setErrors({});
@@ -140,20 +123,17 @@ export default function UserManagement() {
       console.error("Error adding supervisor:", err);
       alert("Error adding supervisor: " + err.message);
     }
+  };
+
+  // ================= Edit Role =================
+  const handleEditRole = async () => {
     if (!editRoleValue || !selectedUser) return;
 
     try {
-      const res = await apiFetch(`/users/${selectedUser.id}/role`, {
+      const result = await apiFetch(`/users/${selectedUser.id}/role`, {
         method: 'PATCH',
         body: JSON.stringify({ role: editRoleValue }),
       });
-
-      if (!res.ok) {
-        const errorText = await res.text();
-        console.error("Failed to update role - Response:", errorText);
-        alert("Failed to update role: " + errorText);
-        return;
-      }
 
       setUsers((prevUsers) =>
         prevUsers.map((user) =>
