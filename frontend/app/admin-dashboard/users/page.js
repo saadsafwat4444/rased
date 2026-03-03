@@ -126,32 +126,64 @@ export default function UserManagement() {
   };
 
   // ================= Edit Role =================
-  const handleEditRole = async () => {
-    if (!editRoleValue || !selectedUser) return;
-console.log("Selected user object:", selectedUser);
-console.log("Role to update to:", editRoleValue);
-    try {
-      const result = await apiFetch(`/users/${selectedUser.id}/role`, {
-        method: 'PATCH',
-       body: JSON.stringify({ role: editRoleValue.toLowerCase() }),
-      });
+//   const handleEditRole = async () => {
+//     if (!editRoleValue || !selectedUser) return;
+// console.log("Selected user object:", selectedUser);
+// console.log("Role to update to:", editRoleValue);
+//     try {
+//       const result = await apiFetch(`/users/${selectedUser.id}/role`, {
+//         method: 'PATCH',
+//        body: JSON.stringify({ role: editRoleValue.toLowerCase() }),
+//       });
 
-      setUsers((prevUsers) =>
-        prevUsers.map((user) =>
-          user.id === selectedUser.id
-            ? { ...user, role: editRoleValue.toLowerCase() }
-            : user
-        )
-      );
+//       setUsers((prevUsers) =>
+//         prevUsers.map((user) =>
+//           user.id === selectedUser.id
+//             ? { ...user, role: editRoleValue.toLowerCase() }
+//             : user
+//         )
+//       );
 
-      setShowEditModal(false);
-      setSelectedUser(null);
-      alert("Role updated successfully!");
-    } catch (err) {
-      console.error("Error updating role:", err);
-      alert("Error updating role: " + err.message);
-    }
-  };
+//       setShowEditModal(false);
+//       setSelectedUser(null);
+//       alert("Role updated successfully!");
+//     } catch (err) {
+//       console.error("Error updating role:", err);
+//       alert("Error updating role: " + err.message);
+//     }
+//   };
+
+// ================= Edit Role =================
+const handleEditRole = async () => {
+  if (!editRoleValue || !selectedUser) return;
+
+  try {
+    const roleToUpdate = editRoleValue.toLowerCase(); // ✅ force lowercase
+
+    console.log('Selected user object:', selectedUser);
+    console.log('Role to update to:', roleToUpdate);
+
+    const result = await apiFetch(`/users/${selectedUser.id}/role`, {
+      method: 'PATCH',
+      body: JSON.stringify({ role: roleToUpdate }),
+    });
+
+    setUsers((prevUsers) =>
+      prevUsers.map((user) =>
+        user.id === selectedUser.id
+          ? { ...user, role: roleToUpdate }
+          : user
+      )
+    );
+
+    setShowEditModal(false);
+    setSelectedUser(null);
+    alert("Role updated successfully!");
+  } catch (err) {
+    console.error("Error updating role:", err);
+    alert("Error updating role: " + err.message);
+  }
+};
 
   // ================= Delete User =================
   const handleDelete = async (userId) => {
