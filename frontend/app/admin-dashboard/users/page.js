@@ -133,7 +133,7 @@ console.log("Role to update to:", editRoleValue);
     try {
       const result = await apiFetch(`/users/${selectedUser.id}/role`, {
         method: 'PATCH',
-        body: JSON.stringify({ role: editRoleValue }),
+       body: JSON.stringify({ role: editRoleValue.toLowerCase() }),
       });
 
       setUsers((prevUsers) =>
