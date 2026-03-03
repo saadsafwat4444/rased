@@ -98,12 +98,12 @@ export default function UserManagement() {
     try {
       const res = await apiFetch('/users/add-supervisor', {
         method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(supervisorData),
       });
 
       if (!res.ok) {
-        const errorText = await res.json();
+        const errorText = await res.text();
         console.error("Failed to add supervisor - Response text:", errorText);
         alert("Failed to add supervisor: " + errorText);
         return;
@@ -112,7 +112,7 @@ export default function UserManagement() {
       let result;
       try {
         const responseText = await res.json();
-        result = responseText ? JSON.parse(responseText) : {};
+        result = responseText;
       } catch (jsonError) {
         console.error("JSON parse error:", jsonError);
         alert("Server response is not valid JSON");
