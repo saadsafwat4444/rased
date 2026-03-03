@@ -152,6 +152,23 @@ export default function UserManagement() {
     }
   };
 
+  // ================= Delete User =================
+  const handleDelete = async (userId) => {
+    if (!confirm("Are you sure you want to delete this user?")) return;
+
+    try {
+      await apiFetch(`/users/${userId}`, {
+        method: 'DELETE',
+      });
+
+      setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
+      alert("User deleted successfully!");
+    } catch (err) {
+      console.error("Error deleting user:", err);
+      alert("Error deleting user: " + err.message);
+    }
+  };
+
   // ================= Pagination =================
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
