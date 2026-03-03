@@ -109,30 +109,37 @@ const stationIds: string[] = Array.isArray(stationScope) ? stationScope : [];
   // تعديل الدور
   async updateUserRole(uid: string, role: string) {
     if (!role) throw new BadRequestException('Role is required');
+    if (!uid) throw new BadRequestException('User ID is required');
+
+    const validRoles = ['admin', 'supervisor', 'user'];
+    if (!validRoles.includes(role.toLowerCase())) {
+      throw new BadRequestException('Invalid role. Must be admin, supervisor, or user');
+    }
 
     try {
       // تحديث Firebase Auth
-      // await admin.auth().setCustomUserClaims(uid, { role });
-
-
-
       const user = await admin.auth().getUser(uid);
-const existingClaims = user.customClaims || {};
+      const existingClaims = user.customClaims || {};
 
-await admin.auth().setCustomUserClaims(uid, {
-  ...existingClaims,
-  role,
-});
+      await admin.auth().setCustomUserClaims(uid, {
+        ...existingClaims,
+        role: role.toLowerCase(),
+      });
 
       // تحديث Firestore فقط إذا كان المستخدم موجوداً
       const userDoc = await firestore.collection('users').doc(uid).get();
       if (userDoc.exists) {
-        await firestore.collection('users').doc(uid).update({ role });
+        await firestore.collection('users').doc(uid).update({ role: role.toLowerCase() });
       }
 
       return { message: 'User role updated successfully' };
     } catch (err: unknown) {
       console.error('Error updating user role:', err);
+      
+      if (err instanceof Error && err.message.includes('no user record')) {
+        throw new BadRequestException('User not found');
+      }
+      
       const errorMessage = err instanceof Error ? err.message : 'Unknown error';
       throw new InternalServerErrorException(
         'Failed to update role: ' + errorMessage,
