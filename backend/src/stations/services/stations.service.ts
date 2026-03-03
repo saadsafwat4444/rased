@@ -87,38 +87,70 @@ export class StationsService {
   }
 
   // ✅ UPDATE
+  // async update(stationNumber: string, dto: UpdateStationDto) {
+  //   const stationRef = this.collection.doc(stationNumber);
+
+  //   const existing = await stationRef.get();
+
+  //   if (!existing.exists) {
+  //     throw new NotFoundException('Station not found');
+  //   }
+
+  //   const updateData: Record<string, unknown> = {
+  //     updatedAt: new Date(),
+  //   };
+
+  //   if (dto.name) updateData.name = dto.name;
+  //   if (dto.region) updateData.region = dto.region;
+  //   if (dto.address) updateData.address = dto.address;
+
+  //   if (dto.lat && dto.lng) {
+  //     updateData.location = {
+  //       lat: dto.lat,
+  //       lng: dto.lng,
+  //     };
+  //   }
+
+  //   if (dto.statusMeta) {
+  //     updateData.statusMeta = dto.statusMeta;
+  //   }
+
+  //   await stationRef.update(updateData);
+
+  //   return { message: 'Station updated successfully' };
+  // }
+
+
   async update(stationNumber: string, dto: UpdateStationDto) {
-    const stationRef = this.collection.doc(stationNumber);
-
-    const existing = await stationRef.get();
-
-    if (!existing.exists) {
-      throw new NotFoundException('Station not found');
-    }
-
-    const updateData: Record<string, unknown> = {
-      updatedAt: new Date(),
-    };
-
-    if (dto.name) updateData.name = dto.name;
-    if (dto.region) updateData.region = dto.region;
-    if (dto.address) updateData.address = dto.address;
-
-    if (dto.lat && dto.lng) {
-      updateData.location = {
-        lat: dto.lat,
-        lng: dto.lng,
-      };
-    }
-
-    if (dto.statusMeta) {
-      updateData.statusMeta = dto.statusMeta;
-    }
-
-    await stationRef.update(updateData);
-
-    return { message: 'Station updated successfully' };
+  if (!dto) {
+    throw new BadRequestException('Update data is required');
   }
+
+  const stationRef = this.collection.doc(stationNumber);
+  const existing = await stationRef.get();
+
+  if (!existing.exists) {
+    throw new NotFoundException('Station not found');
+  }
+
+  const updateData: Record<string, unknown> = { updatedAt: new Date() };
+
+  if (dto.name != null) updateData.name = dto.name;
+  if (dto.region != null) updateData.region = dto.region;
+  if (dto.address != null) updateData.address = dto.address;
+
+  if (dto.lat != null && dto.lng != null) {
+    updateData.location = { lat: dto.lat, lng: dto.lng };
+  }
+
+  if (dto.statusMeta != null) {
+    updateData.statusMeta = dto.statusMeta;
+  }
+
+  await stationRef.update(updateData);
+
+  return { message: 'Station updated successfully' };
+}
 
   // ✅ DELETE
   async remove(stationNumber: string) {
