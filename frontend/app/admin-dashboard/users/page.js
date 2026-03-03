@@ -139,7 +139,7 @@ console.log("Role to update to:", editRoleValue);
       setUsers((prevUsers) =>
         prevUsers.map((user) =>
           user.id === selectedUser.id
-            ? { ...user, role: editRoleValue }
+            ? { ...user, role: editRoleValue.toLowerCase() }
             : user
         )
       );
