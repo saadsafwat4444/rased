@@ -1,16 +1,11 @@
-import {
-  Injectable,
-  BadRequestException,
-  NotFoundException,
-} from '@nestjs/common';
-import { firestore } from '../../firebase/firebase-admin';
+import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
+import { db } from '../../firebase/firebase-admin';
 import { CreateStationDto } from '../dto/create-station.dto';
 import { UpdateStationDto } from '../dto/update-station.dto';
 
 @Injectable()
 export class StationsService {
-  private db = firestore();
-  private collection = this.db.collection('stations');
+  private collection = db.collection('stations');
 
   async create(dto: CreateStationDto) {
     const stationRef = this.collection.doc(dto.stationNumber);
