@@ -128,7 +128,8 @@ export default function UserManagement() {
   // ================= Edit Role =================
   const handleEditRole = async () => {
     if (!editRoleValue || !selectedUser) return;
-
+console.log("Selected user object:", selectedUser);
+console.log("Role to update to:", editRoleValue);
     try {
       const result = await apiFetch(`/users/${selectedUser.id}/role`, {
         method: 'PATCH',
