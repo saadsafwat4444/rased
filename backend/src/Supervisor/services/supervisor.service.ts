@@ -13,7 +13,7 @@ interface CreateSupervisorDto {
  
   password: string;
   phone?: string;
-  stations?: string[];
+  stationScope?: string[];
 }
 
 interface Report {
@@ -28,10 +28,10 @@ export class SupervisorService {
   private db = admin.firestore();
 
   async createSupervisor(dto: CreateSupervisorDto) {
-    const { fullName, email, password, phone, stations } = dto;
+ const { fullName, email, password, phone, stationScope } = dto;
 
     console.log('CreateSupervisor DTO:', dto);
-    console.log('Stations received:', stations);
+    // console.log('Stations received:', stations);
 
     if (!fullName || !email || !password) {
       throw new BadRequestException('Missing required fields');
@@ -48,8 +48,7 @@ export class SupervisorService {
       const uid = userRecord.uid;
 
       // 2️⃣ استلام station IDs مباشرة من الفرونت
-      const stationIds: string[] = Array.isArray(stations) ? stations : [];
-
+const stationIds: string[] = Array.isArray(stationScope) ? stationScope : [];
       if (stationIds.length === 0) {
         throw new BadRequestException(
           'Supervisor must have at least one station',
@@ -81,13 +80,20 @@ export class SupervisorService {
         });
 
       return { message: 'Supervisor added successfully', uid };
-    } catch (err: unknown) {
-      console.error('Error creating supervisor:', err);
-      const message = err instanceof Error ? err.message : 'Unknown error';
-      throw new InternalServerErrorException(
-        'Failed to create supervisor: ' + message,
-      );
-    }
+    
+      }
+    catch (err: unknown) {
+  console.error('Error creating supervisor:', err);
+
+  if (err instanceof BadRequestException) {
+    throw err; // يرجع 400 زي ما هو
+  }
+
+  const message = err instanceof Error ? err.message : 'Unknown error';
+  throw new InternalServerErrorException(
+    'Failed to create supervisor: ' + message,
+  );
+}
   }
 
   // جلب كل المستخدمين
@@ -107,7 +113,17 @@ export class SupervisorService {
 
     try {
       // تحديث Firebase Auth
-      await admin.auth().setCustomUserClaims(uid, { role });
+      // await admin.auth().setCustomUserClaims(uid, { role });
+
+
+
+      const user = await admin.auth().getUser(uid);
+const existingClaims = user.customClaims || {};
+
+await admin.auth().setCustomUserClaims(uid, {
+  ...existingClaims,
+  role,
+});
 
       // تحديث Firestore فقط إذا كان المستخدم موجوداً
       const userDoc = await firestore.collection('users').doc(uid).get();
