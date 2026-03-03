@@ -483,6 +483,7 @@ export default function SupervisorManagement() {
         return;
       }
       const result = await res.json();
+      console.log(result);
       setSupervisors(prev => [...prev, { ...supervisorData, role: "Supervisor", id: result.uid }]);
       setFormData({ fullName: "", email: "", password: "", phone: "", stationScope: [] });
       setErrors({});
