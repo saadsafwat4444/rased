@@ -3,7 +3,7 @@ import {
   BadRequestException,
   NotFoundException,
 } from '@nestjs/common';
-import { firestore } from 'firebase-admin';
+import { firestore } from '../../firebase/firebase-admin';
 import { CreateStationDto } from '../dto/create-station.dto';
 import { UpdateStationDto } from '../dto/update-station.dto';
 
@@ -41,7 +41,23 @@ export class StationsService {
   }
 
   // ✅ GET ALL
+  // async findAll(region?: string) {
+  //   let query = this.collection as FirebaseFirestore.Query;
+
+  //   if (region) {
+  //     query = query.where('region', '==', region);
+  //   }
+
+  //   const snapshot = await query.get();
+
+  //   return snapshot.docs.map((doc) => ({
+  //     id: doc.id,
+  //     ...doc.data(),
+  //   }));
+  // }
+
   async findAll(region?: string) {
+  try {
     let query = this.collection as FirebaseFirestore.Query;
 
     if (region) {
@@ -49,12 +65,17 @@ export class StationsService {
     }
 
     const snapshot = await query.get();
+    console.log('Stations snapshot size:', snapshot.size); // ✅
 
-    return snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
+    return snapshot.docs.map((doc) => {
+      console.log('Station doc data:', doc.data()); // ✅
+      return { id: doc.id, ...doc.data() };
+    });
+  } catch (error) {
+    console.error('Error fetching stations:', error); // ✅
+    throw error; // لو عايز Nest يرجع 500
   }
+}
 
   // ✅ GET ONE
   async findOne(stationNumber: string) {
