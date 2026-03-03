@@ -154,24 +154,76 @@ export default function UserManagement() {
 //   };
 
 // ================= Edit Role =================
+// const handleEditRole = async () => {
+//   if (!editRoleValue || !selectedUser) return;
+
+//   try {
+//     const roleToUpdate = editRoleValue.toLowerCase(); // ✅ force lowercase
+
+//     console.log('Selected user object:', selectedUser);
+//     console.log('Role to update to:', roleToUpdate);
+
+//     const result = await apiFetch(`/users/${selectedUser.id}/role`, {
+//       method: 'PATCH',
+//       headers: {
+//   'Content-Type': 'application/json',
+// },
+//       body: JSON.stringify({ role: roleToUpdate }),
+//     });
+
+//     setUsers((prevUsers) =>
+//       prevUsers.map((user) =>
+//         user.id === selectedUser.id
+//           ? { ...user, role: roleToUpdate }
+//           : user
+//       )
+//     );
+
+//     setShowEditModal(false);
+//     setSelectedUser(null);
+//     alert("Role updated successfully!");
+//   } catch (err) {
+//     console.error("Error updating role:", err);
+//     alert("Error updating role: " + err.message);
+//   }
+// };
+
+
+
+// ================= Edit Role =================
+ // ================= Edit Role =================
 const handleEditRole = async () => {
   if (!editRoleValue || !selectedUser) return;
 
+  console.log("Selected user object:", selectedUser);
+  console.log("Role to update to:", editRoleValue.toLowerCase());
+
   try {
-    const roleToUpdate = editRoleValue.toLowerCase(); // ✅ force lowercase
+    const response = await fetch(
+      `https://rased-production.up.railway.app/users/${selectedUser.id}/role`,
+      {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json', // مهم جدًا
+        },
+        body: JSON.stringify({ role: editRoleValue.toLowerCase() }), // خليه lowercase
+      }
+    );
 
-    console.log('Selected user object:', selectedUser);
-    console.log('Role to update to:', roleToUpdate);
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error("Server responded with error:", errorData);
+      alert("Error updating role: " + (errorData.message || "Unknown error"));
+      return;
+    }
 
-    const result = await apiFetch(`/users/${selectedUser.id}/role`, {
-      method: 'PATCH',
-      body: JSON.stringify({ role: roleToUpdate }),
-    });
+    const result = await response.json();
+    console.log("Role update result:", result);
 
     setUsers((prevUsers) =>
       prevUsers.map((user) =>
         user.id === selectedUser.id
-          ? { ...user, role: roleToUpdate }
+          ? { ...user, role: editRoleValue.toLowerCase() }
           : user
       )
     );
@@ -181,7 +233,7 @@ const handleEditRole = async () => {
     alert("Role updated successfully!");
   } catch (err) {
     console.error("Error updating role:", err);
-    alert("Error updating role: " + err.message);
+    alert("Error updating role: " + (err.message || "Unknown error"));
   }
 };
 
