@@ -159,7 +159,7 @@ const handleSubmit = async (e) => {
     }
 
     // إرسال البلاغ
-    const res = await apiFetch('/reports', {
+    const result = await apiFetch('/reports', {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",
@@ -168,22 +168,15 @@ const handleSubmit = async (e) => {
       body: JSON.stringify(reportPayload),
     });
 
-    if (res.ok) {
-      await Swal.fire({
-        icon: "success",
-        title: "Report created successfully!",
-        showConfirmButton: false,
-        timer: 2000,
-      });
-      router.push("/user-dashboard/my-report");
-    } else {
-      const err = await res.json();
-      await Swal.fire({
-        icon: "error",
-        title: "Error occurred!",
-        text: err.message,
-      });
-    }
+    // apiFetch بيرمي Error لو الـ status مش ok، فلو وصلنا هنا يبقى الطلب نجح
+    console.log("Report created:", result);
+    await Swal.fire({
+      icon: "success",
+      title: "Report created successfully!",
+      showConfirmButton: false,
+      timer: 2000,
+    });
+    router.push("/user-dashboard/my-report");
   } catch (error) {
     console.error("Upload/Submission error:", error);
     await Swal.fire({
