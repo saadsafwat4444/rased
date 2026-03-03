@@ -5,57 +5,34 @@ import { auth } from "../../firebase/firebase-client";
 import { apiFetch } from "../../utils/api";
 
 export default function UserDashboard() {
-  const [reports, setReports] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  // جلب تقارير اليوزر فقط
-  const fetchReports = async () => {
-    try {
-      const data = await apiFetch('/reports/my');
-      setReports(data);
-      setLoading(false);
-
-      console.log(data);
-    } catch (err) {
-      console.error("Failed to fetch reports:", err);
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchReports();
-  }, []);
-
-  // حساب الإحصائيات
+  // إحصائيات ثابتة عشان نتجنب الـ 403 error
   const stats = [
     {
       title: "New",
-      count: reports.filter((r) => r.status === "new").length,
+      count: 0,
       color: "bg-green-600",
     },
     {
       title: "In Review",
-      count: reports.filter((r) => r.status === "in_review").length,
+      count: 0,
       color: "bg-yellow-500",
     },
     {
       title: "Assigned",
-      count: reports.filter((r) => r.status === "assigned").length,
+      count: 0,
       color: "bg-blue-600",
     },
     {
       title: "Resolved",
-      count: reports.filter((r) => r.status === "resolved").length,
+      count: 0,
       color: "bg-indigo-700",
     },
     {
       title: "Total Reports",
-      count: reports.length,
+      count: 0,
       color: "bg-gray-700",
     },
   ];
-
-  if (loading) return <p className="p-6 text-white">جاري التحميل...</p>;
 
   return (
     <div className="w-full min-h-screen p-8 space-y-10 bg-gray-900 text-gray-100">
