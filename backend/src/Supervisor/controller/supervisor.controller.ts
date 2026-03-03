@@ -40,7 +40,7 @@ interface CreateSupervisorDto {
   email: string;
   password: string;
   phone?: string;
-  stations?: string[];
+  stationScope: string[];
 }
 
 @Controller('users') // endpoint base يكون /users

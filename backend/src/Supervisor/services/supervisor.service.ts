@@ -10,7 +10,6 @@ import { admin, firestore } from '../../firebase/firebase-admin';
 interface CreateSupervisorDto {
   fullName: string;
   email: string;
- 
   password: string;
   phone?: string;
   stationScope?: string[];
