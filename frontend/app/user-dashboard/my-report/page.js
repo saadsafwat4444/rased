@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { auth } from "../../../firebase/firebase-client";
+import { apiFetch } from "../../../utils/api";
 
 export default function MyReports() {
   const [reports, setReports] = useState([]);
@@ -11,20 +11,8 @@ export default function MyReports() {
 
   useEffect(() => {
     const fetchReports = async () => {
-      const user = auth.currentUser;
-      if (!user) return;
-
       try {
-        const token = await user.getIdToken();
-        const res = await fetch("http://localhost:5555/reports/my", {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
-          
-        
-        const data = await res.json();
+        const data = await apiFetch('/reports/my');
 
         const reportsArray = Array.isArray(data)
           ? data.map((r) => ({
