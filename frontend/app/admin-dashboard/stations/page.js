@@ -121,11 +121,17 @@ export default function StationsPage() {
       if (editStation) {
         await apiFetch(`/stations/${editStation.id}`, {
           method: 'PATCH',
+           headers: {
+          'Content-Type': 'application/json', // مهم جدًا
+        },
           body: JSON.stringify(payload),
         });
       } else {
         await apiFetch('/stations', {
           method: 'POST',
+           headers: {
+          'Content-Type': 'application/json', // مهم جدًا
+        },
           body: JSON.stringify(payload),
         });
       }
