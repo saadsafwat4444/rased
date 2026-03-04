@@ -254,10 +254,10 @@ export default function MyReports() {
       </div>
 
       {/* Pagination Controls */}
-      {filteredReports.length > reportsPerPage && (
+      {reports.length > reportsPerPage && (
         <div className="flex justify-between items-center mt-8">
           <div className="text-sm text-gray-400">
-            Showing {indexOfFirstReport + 1} to {Math.min(indexOfLastReport, filteredReports.length)} of {filteredReports.length} reports
+            Showing {indexOfFirstReport + 1} to {Math.min(indexOfLastReport, reports.length)} of {reports.length} reports
           </div>
           <div className="flex gap-2">
             <button

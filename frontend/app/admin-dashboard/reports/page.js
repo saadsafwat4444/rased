@@ -80,12 +80,24 @@ export default function AllReports() {
   }, [region, station, startDate, endDate]);
 
   // Pagination logic
-  const filteredReports = reports.filter(
-    (r) =>
-      r.stationNumber?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      r.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      r.status?.toLowerCase().includes(searchQuery.toLowerCase())
+  // const filteredReports = reports.filter(
+  //   (r) =>
+  //     r.stationNumber?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  //     r.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  //     r.status?.toLowerCase().includes(searchQuery.toLowerCase())
+  // );
+
+  const filteredReports = reports.filter((r) => {
+  const stationNumber = r.stationNumber || "";  
+  const description = r.description || "";
+  const status = r.status || "";
+
+  return (
+    String(stationNumber).toLowerCase().includes(searchQuery.toLowerCase()) ||
+    String(description).toLowerCase().includes(searchQuery.toLowerCase()) ||
+    String(status).toLowerCase().includes(searchQuery.toLowerCase())
   );
+});
 
   const indexOfLastReport = currentPage * reportsPerPage;
   const indexOfFirstReport = indexOfLastReport - reportsPerPage;
