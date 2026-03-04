@@ -261,46 +261,52 @@ const handleEditRole = async () => {
   const totalPages = Math.ceil(users.length / usersPerPage);
 
   return (
-    <div className="p-6">
+    <div className="p-4 md:p-6 bg-gray-900 text-gray-100 min-h-screen">
       {/* Header */}
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold">User Management</h1>
-        <button onClick={() => setShowAddModal(true)} className="bg-blue-500 text-white px-4 py-2 rounded">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+        <h1 className="text-xl md:text-2xl font-bold">User Management</h1>
+        <button 
+          onClick={() => setShowAddModal(true)} 
+          className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition w-full md:w-auto"
+        >
           Add Supervisor
         </button>
       </div>
 
-      {/* Table */}
-      <table className="w-full border text-center">
-        <thead className="bg-gray-300">
+    {/* Desktop Table */}
+    <div className="hidden md:block overflow-x-auto">
+      <table className="w-full border border-gray-700 rounded-xl overflow-hidden">
+        <thead className="bg-gray-800">
           <tr>
-            <th className="p-2">Name</th>
-            <th className="p-2">Station</th>
-            <th className="p-2">Phone</th>
-            <th className="p-2">Role</th>
-            <th className="p-2">Action</th>
+            <th className="p-3 text-left text-gray-300">Name</th>
+            <th className="p-3 text-left text-gray-300">Station</th>
+            <th className="p-3 text-left text-gray-300">Phone</th>
+            <th className="p-3 text-left text-gray-300">Role</th>
+            <th className="p-3 text-left text-gray-300">Action</th>
           </tr>
         </thead>
         <tbody>
           {currentUsers.map((user) => (
-            <tr key={user.id} className="border-t">
-              <td className="p-2">{user.fullName}</td>
-              <td className="p-2">{getStationNames(user.stationScope)}</td>
-              <td className="p-2">{user.phone || "-"}</td>
-              <td className="p-2">{user.role}</td>
-              <td className="p-2 flex justify-center gap-2">
+            <tr key={user.id} className="border-t border-gray-700 hover:bg-gray-800 transition-colors">
+              <td className="p-3">{user.fullName}</td>
+              <td className="p-3">{getStationNames(user.stationScope)}</td>
+              <td className="p-3">{user.phone || "-"}</td>
+              <td className="p-3">{user.role}</td>
+              <td className="p-3 flex justify-center gap-2">
                 <button
                   onClick={() => {
                     setSelectedUser(user);
                     setEditRoleValue(user.role);
                     setShowEditModal(true);
                   }}
-                  className="bg-yellow-400 text-white px-3 py-1 rounded"
+                  className="bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded transition"
                 >
                   Edit Role
                 </button>
-
-                <button onClick={() => handleDelete(user.id)} className="bg-red-500 text-white px-3 py-1 rounded">
+                <button 
+                  onClick={() => handleDelete(user.id)} 
+                  className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded transition"
+                >
                   Delete
                 </button>
               </td>
@@ -308,82 +314,116 @@ const handleEditRole = async () => {
           ))}
         </tbody>
       </table>
+    </div>
 
-      {/* Pagination */}
-      {users.length > usersPerPage && (
-        <div className="flex justify-between items-center mt-6">
-          <div>
-            Showing {indexOfFirstUser + 1} to {Math.min(indexOfLastUser, users.length)} of {users.length}
+    {/* Mobile Cards */}
+    <div className="md:hidden space-y-4">
+      {currentUsers.map((user) => (
+        <div key={user.id} className="bg-gray-800 rounded-xl p-4 border border-gray-700">
+          <div className="flex justify-between items-start mb-3">
+            <div>
+              <h3 className="font-semibold text-lg text-indigo-300">{user.fullName}</h3>
+              <p className="text-sm text-gray-400">{user.role}</p>
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={() => {
+                  setSelectedUser(user);
+                  setEditRoleValue(user.role);
+                  setShowEditModal(true);
+                }}
+                className="bg-yellow-400 hover:bg-yellow-500 text-white px-2 py-1 rounded text-sm transition"
+              >
+                Edit
+              </button>
+              <button 
+                onClick={() => handleDelete(user.id)} 
+                className="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded text-sm transition"
+              >
+                Delete
+              </button>
+            </div>
           </div>
-
-          <div className="flex gap-2">
-            <button
-              disabled={currentPage === 1}
-              onClick={() => setCurrentPage((p) => p - 1)}
-              className="px-3 py-1 bg-gray-300 rounded disabled:opacity-50"
-            >
-              Previous
-            </button>
-
-            <span>
-              Page {currentPage} of {totalPages}
-            </span>
-
-            <button
-              disabled={currentPage === totalPages}
-              onClick={() => setCurrentPage((p) => p + 1)}
-              className="px-3 py-1 bg-gray-300 rounded disabled:opacity-50"
-            >
-              Next
-            </button>
+          <div className="space-y-1 text-sm">
+            <p><span className="text-gray-400">Station:</span> {getStationNames(user.stationScope)}</p>
+            <p><span className="text-gray-400">Phone:</span> {user.phone || "-"}</p>
           </div>
         </div>
-      )}
+      ))}
+    </div>
 
-      {/* Add Supervisor Modal */}
-      {showAddModal && (
-        <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
-          <div className="bg-black text-white rounded-lg p-6 w-96 max-h-[85vh] overflow-y-auto">
-            <h2 className="text-xl font-bold mb-4">Add Supervisor</h2>
+    {/* Pagination */}
+    {users.length > usersPerPage && (
+      <div className="flex flex-col md:flex-row justify-between items-center mt-6 gap-4">
+        <div className="text-sm text-gray-400 text-center md:text-left">
+          Showing {indexOfFirstUser + 1} to {Math.min(indexOfLastUser, users.length)} of {users.length}
+        </div>
+        <div className="flex gap-2">
+          <button
+            disabled={currentPage === 1}
+            onClick={() => setCurrentPage((p) => p - 1)}
+            className="px-3 py-2 bg-gray-700 hover:bg-gray-600 rounded disabled:opacity-50 disabled:cursor-not-allowed transition"
+          >
+            Previous
+          </button>
+          <span className="px-4 py-2 text-gray-300">
+            Page {currentPage} of {totalPages}
+          </span>
+          <button
+            disabled={currentPage === totalPages}
+            onClick={() => setCurrentPage((p) => p + 1)}
+            className="px-3 py-2 bg-gray-700 hover:bg-gray-600 rounded disabled:opacity-50 disabled:cursor-not-allowed transition"
+          >
+            Next
+          </button>
+        </div>
+      </div>
+    )}
 
-            <input
-              placeholder="Full Name"
-              value={formData.fullName}
-              onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-              className="w-full p-2 border border-gray-600 rounded mb-1 bg-gray-800 text-white placeholder-gray-400"
-            />
-            {errors.fullName && <p className="text-red-400">{errors.fullName}</p>}
+    {/* Add Supervisor Modal */}
+    {showAddModal && (
+      <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50 p-4">
+        <div className="bg-gray-800 text-white rounded-xl p-6 w-full max-w-md max-h-[85vh] overflow-y-auto">
+          <h2 className="text-xl font-bold mb-4">Add Supervisor</h2>
 
-            <input
-              placeholder="Email"
-              value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="w-full p-2 border border-gray-600 rounded mb-1 bg-gray-800 text-white placeholder-gray-400"
-            />
-            {errors.email && <p className="text-red-400">{errors.email}</p>}
+          <input
+            placeholder="Full Name"
+            value={formData.fullName}
+            onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+            className="w-full p-3 border border-gray-600 rounded-lg mb-1 bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          {errors.fullName && <p className="text-red-400 text-sm mb-2">{errors.fullName}</p>}
 
-            <input
-              type="password"
-              placeholder="Password"
-              value={formData.password}
-              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-              className="w-full p-2 border border-gray-600 rounded mb-1 bg-gray-800 text-white placeholder-gray-400"
-            />
-            {errors.password && <p className="text-red-400">{errors.password}</p>}
+          <input
+            placeholder="Email"
+            value={formData.email}
+            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+            className="w-full p-3 border border-gray-600 rounded-lg mb-1 bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          {errors.email && <p className="text-red-400 text-sm mb-2">{errors.email}</p>}
 
-            <input
-              placeholder="Phone (11 digits)"
-              value={formData.phone}
-              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-              className="w-full p-2 border border-gray-600 rounded mb-1 bg-gray-800 text-white placeholder-gray-400"
-            />
-            {errors.phone && <p className="text-red-400">{errors.phone}</p>}
+          <input
+            type="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+            className="w-full p-3 border border-gray-600 rounded-lg mb-1 bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          {errors.password && <p className="text-red-400 text-sm mb-2">{errors.password}</p>}
 
-            <div className="mt-3">
-              <p className="mb-2 font-semibold">Select Stations</p>
+          <input
+            placeholder="Phone (11 digits)"
+            value={formData.phone}
+            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+            className="w-full p-3 border border-gray-600 rounded-lg mb-1 bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          {errors.phone && <p className="text-red-400 text-sm mb-2">{errors.phone}</p>}
 
+          <div className="mt-4">
+            <p className="mb-2 font-semibold">Select Stations</p>
+            <div className="max-h-40 overflow-y-auto space-y-2">
               {stations.map((station) => (
-                <div key={station.id} className="flex items-center gap-2 mb-1">
+                <div key={station.id} className="flex items-center gap-2">
                   <input
                     type="checkbox"
                     checked={formData.stationScope.includes(station.id)}
@@ -400,58 +440,66 @@ const handleEditRole = async () => {
                         });
                       }
                     }}
+                    className="rounded"
                   />
-                  <label>{station.name}</label>
+                  <label className="text-sm">{station.name}</label>
                 </div>
               ))}
-
-              {errors.stationScope && <p className="text-red-400">{errors.stationScope}</p>}
             </div>
+            {errors.stationScope && <p className="text-red-400 text-sm mt-2">{errors.stationScope}</p>}
+          </div>
 
-            <div className="flex justify-end gap-2 mt-4">
-              <button onClick={() => setShowAddModal(false)} className="px-4 py-2 border rounded">
-                Cancel
-              </button>
-
-              <button onClick={handleAddSupervisor} className="bg-blue-500 px-4 py-2 rounded">
-                Add
-              </button>
-            </div>
+          <div className="flex justify-end gap-2 mt-6">
+            <button 
+              onClick={() => setShowAddModal(false)} 
+              className="px-4 py-2 border border-gray-600 rounded-lg hover:bg-gray-700 transition"
+            >
+              Cancel
+            </button>
+            <button 
+              onClick={handleAddSupervisor} 
+              className="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg transition"
+            >
+              Add
+            </button>
           </div>
         </div>
-      )}
+      </div>
+    )}
 
-      {/* Edit Role Modal */}
-      {showEditModal && selectedUser && (
-        <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
-          <div className="bg-white rounded-lg p-6 w-80">
-            <h2 className="text-xl font-bold mb-4">Edit Role</h2>
-
-            <select value={editRoleValue} onChange={(e) => setEditRoleValue(e.target.value)} className="w-full p-2 border rounded mb-4">
-              <option value="Admin">Admin</option>
-              <option value="Supervisor">Supervisor</option>
-              <option value="User">User</option>
-            </select>
-
-            <div className="flex justify-end gap-2">
-              <button onClick={() => setShowEditModal(false)} className="px-4 py-2 border rounded">
-                Cancel
-              </button>
-
-              <button onClick={handleEditRole} className="bg-blue-500 text-white px-4 py-2 rounded">
-                Save
-              </button>
-            </div>
+    {/* Edit Role Modal */}
+    {showEditModal && selectedUser && (
+      <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50 p-4">
+        <div className="bg-gray-800 text-white rounded-xl p-6 w-full max-w-sm">
+          <h2 className="text-xl font-bold mb-4">Edit Role</h2>
+          <select 
+            value={editRoleValue} 
+            onChange={(e) => setEditRoleValue(e.target.value)} 
+            className="w-full p-3 border border-gray-600 rounded-lg mb-4 bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="Admin">Admin</option>
+            <option value="Supervisor">Supervisor</option>
+            <option value="User">User</option>
+          </select>
+          <div className="flex justify-end gap-2">
+            <button 
+              onClick={() => setShowEditModal(false)} 
+              className="px-4 py-2 border border-gray-600 rounded-lg hover:bg-gray-700 transition"
+            >
+              Cancel
+            </button>
+            <button 
+              onClick={handleEditRole} 
+              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition"
+            >
+              Save
+            </button>
           </div>
         </div>
-      )}
-    </div>
-  );
-}
-
-
-
-// "use client";
+      </div>
+    )}
+  </div>
+);
 
 // import { useEffect, useState } from "react";
 // import { auth } from "../../../firebase/firebase-client";

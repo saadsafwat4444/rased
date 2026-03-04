@@ -43,35 +43,33 @@ export default function DashboardHomeAdmin() {
   }, []);
 
   return (
-    <div className="w-full min-h-screen p-8 space-y-10 bg-gray-900 text-gray-100">
+    <div className="w-full min-h-screen p-4 md:p-8 space-y-6 md:space-y-10 bg-gray-900 text-gray-100">
 
       <div className="text-center space-y-4">
-        <h1 className="text-4xl font-bold text-indigo-400">
+        <h1 className="text-2xl md:text-4xl font-bold text-indigo-400">
           Welcome to Admin Dashboard
         </h1>
-        <p className="text-gray-300 max-w-2xl mx-auto">
+        <p className="text-gray-300 max-w-2xl mx-auto text-sm md:text-base">
           Overview of all reports across all stations.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-6">
+      <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3 md:gap-6">
         {statusList.map((s) => (
           <div
             key={s.key}
-            className={`p-6 rounded-2xl ${s.color} text-white flex flex-col items-center justify-center shadow-lg shadow-black/50 hover:scale-105 transition`}
+            className={`p-3 md:p-6 rounded-xl md:rounded-2xl ${s.color} text-white flex flex-col items-center justify-center shadow-lg shadow-black/50 hover:scale-105 transition cursor-pointer`}
           >
-            <h3 className="text-lg font-medium">{s.label}</h3>
-            <p className="mt-2 text-3xl font-bold">{stats[s.key] ?? 0}</p>
+            <h3 className="text-xs md:text-lg font-medium">{s.label}</h3>
+            <p className="mt-1 md:mt-2 text-xl md:text-3xl font-bold">{stats[s.key] ?? 0}</p>
           </div>
         ))}
 
-        <div className="p-6 rounded-2xl bg-indigo-700 text-white flex flex-col items-center justify-center shadow-lg shadow-black/50 hover:scale-105 transition">
-          <h3 className="text-lg font-medium">Total Reports</h3>
-          <p className="mt-2 text-3xl font-bold">{total}</p>
+        <div className="p-3 md:p-6 rounded-xl md:rounded-2xl bg-indigo-700 text-white flex flex-col items-center justify-center shadow-lg shadow-black/50 hover:scale-105 transition cursor-pointer">
+          <h3 className="text-xs md:text-lg font-medium">Total Reports</h3>
+          <p className="mt-1 md:mt-2 text-xl md:text-3xl font-bold">{total}</p>
         </div>
       </div>
-
-      
 
     </div>
   );

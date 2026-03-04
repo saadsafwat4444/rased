@@ -32,15 +32,25 @@ export default function UserSidebar() {
 
       <aside
         className={`fixed top-0 left-0 h-full bg-gray-900 shadow-2xl z-40 transition-all duration-300
-        ${isOpen ? "w-64" : isMobile ? "w-0" : "w-16"}`}
+        ${isOpen ? "w-64" : "w-0"} md:${isOpen ? "w-64" : "w-16"}`}
       >
-        {/* Toggle Button */}
+        {/* Toggle Button - Always Visible */}
         <button
-          className={`absolute -right-3 top-3 bg-indigo-600 text-white p-2 rounded-full shadow-lg z-50 hover:bg-indigo-700 transition-colors`}
+          className={`absolute -right-3 top-3 bg-indigo-600 text-white p-2 rounded-full shadow-lg z-50 hover:bg-indigo-700 transition-colors md:flex ${isMobile && !isOpen ? 'flex' : 'hidden'}`}
           onClick={() => setIsOpen(!isOpen)}
         >
           {isOpen ? (isMobile ? <FaTimes /> : <FaBars className="rotate-180" />) : <FaBars />}
         </button>
+
+        {/* Mobile Toggle Button - Only when sidebar is closed */}
+        {isMobile && !isOpen && (
+          <button
+            className="fixed top-4 left-4 bg-indigo-600 text-white p-3 rounded-full shadow-lg z-50 hover:bg-indigo-700 transition-colors"
+            onClick={() => setIsOpen(true)}
+          >
+            <FaBars />
+          </button>
+        )}
 
         {/* Menu Items */}
         <nav className="mt-20 flex flex-col gap-4 px-3">

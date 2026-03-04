@@ -118,25 +118,27 @@ export default function AllReports() {
     );
 
   return (
-    <div className="min-h-screen p-8 bg-gray-900 text-gray-100">
-      <h1 className="text-3xl font-bold mb-6 text-indigo-400 tracking-wide">
+    <div className="min-h-screen p-4 md:p-8 bg-gray-900 text-gray-100">
+      <h1 className="text-2xl md:text-3xl font-bold mb-4 md:mb-6 text-indigo-400 tracking-wide">
         All Reports
       </h1>
 
       {/* Search */}
-      <input
-        type="text"
-        placeholder="Search reports..."
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        className="w-full md:w-1/3 mb-6 px-4 py-2 rounded-xl bg-gray-800 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
-      />
+      <div className="mb-4 md:mb-6">
+        <input
+          type="text"
+          placeholder="Search reports..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="w-full px-4 py-2 md:py-3 rounded-xl bg-gray-800 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+        />
+      </div>
 
       {/* Filters */}
-      <div className="flex flex-wrap gap-4 mb-8">
+      <div className="flex flex-wrap gap-2 md:gap-4 mb-6 md:mb-8">
         {/* Region */}
         <select
-          className="px-4 py-2 rounded-xl bg-gray-800 text-gray-100 hover:bg-gray-700 transition"
+          className="px-3 md:px-4 py-2 rounded-xl bg-gray-800 text-gray-100 hover:bg-gray-700 transition text-sm md:text-base"
           value={region}
           onChange={(e) => setRegion(e.target.value)}
         >
@@ -150,7 +152,7 @@ export default function AllReports() {
 
         {/* Station */}
         <select
-          className="px-4 py-2 rounded-xl bg-gray-800 text-gray-100 hover:bg-gray-700 transition"
+          className="px-3 md:px-4 py-2 rounded-xl bg-gray-800 text-gray-100 hover:bg-gray-700 transition text-sm md:text-base"
           value={station}
           onChange={(e) => setStation(e.target.value)}
         >
@@ -167,13 +169,13 @@ export default function AllReports() {
         {/* Dates */}
         <input
           type="date"
-          className="px-4 py-2 rounded-xl bg-gray-800 text-gray-100 hover:bg-gray-700 transition"
+          className="px-3 md:px-4 py-2 rounded-xl bg-gray-800 text-gray-100 hover:bg-gray-700 transition text-sm md:text-base"
           value={startDate}
           onChange={(e) => setStartDate(e.target.value)}
         />
         <input
           type="date"
-          className="px-4 py-2 rounded-xl bg-gray-800 text-gray-100 hover:bg-gray-700 transition"
+          className="px-3 md:px-4 py-2 rounded-xl bg-gray-800 text-gray-100 hover:bg-gray-700 transition text-sm md:text-base"
           value={endDate}
           onChange={(e) => setEndDate(e.target.value)}
         />
@@ -181,20 +183,20 @@ export default function AllReports() {
 
       {/* Reports */}
       {filteredReports.length === 0 ? (
-        <p className="text-gray-400 text-lg">No reports found.</p>
+        <p className="text-gray-400 text-lg text-center py-8">No reports found.</p>
       ) : (
         <>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {currentReports.map((report) => (
               <div
                 key={report.id}
-                className="bg-gray-800 rounded-3xl p-6 shadow-xl hover:scale-105 hover:shadow-2xl transition-transform duration-300 flex flex-col"
+                className="bg-gray-800 rounded-xl md:rounded-3xl p-4 md:p-6 shadow-xl hover:scale-105 hover:shadow-2xl transition-transform duration-300 flex flex-col"
               >
-                <h2 className="font-semibold text-lg mb-2 text-indigo-300">
+                <h2 className="font-semibold text-base md:text-lg mb-2 text-indigo-300">
                   Station: {report.stationNumber || report.stationId}
                 </h2>
-                <p className="text-gray-300 mb-3">{report.description}</p>
-                <p className="text-sm">
+                <p className="text-gray-300 mb-3 text-sm md:text-base line-clamp-3">{report.description}</p>
+                <p className="text-sm md:text-base">
                   Status:{" "}
                   <span
                     className={`font-bold ${
@@ -215,7 +217,7 @@ export default function AllReports() {
                   </span>
                 </p>
                 {report.createdAt && (
-                  <p className="text-gray-500 text-sm mt-2">
+                  <p className="text-gray-500 text-xs md:text-sm mt-2">
                     Created:{" "}
                     {report.createdAt.toDate
                       ? report.createdAt.toDate().toLocaleString()
@@ -225,7 +227,7 @@ export default function AllReports() {
 
                 <Link
                   href={`/admin-dashboard/reports/${report.id}`}
-                  className="mt-auto inline-block text-center bg-indigo-500 hover:bg-indigo-600 text-white font-semibold px-5 py-2 rounded-xl transition"
+                  className="mt-auto inline-block text-center bg-indigo-500 hover:bg-indigo-600 text-white font-semibold px-4 py-2 md:px-5 md:py-2 rounded-xl transition text-sm md:text-base"
                 >
                   Show Details
                 </Link>
@@ -235,15 +237,15 @@ export default function AllReports() {
 
           {/* Pagination Controls */}
           {filteredReports.length > reportsPerPage && (
-            <div className="flex justify-between items-center mt-8">
-              <div className="text-sm text-gray-400">
+            <div className="flex flex-col md:flex-row justify-between items-center mt-6 md:mt-8 gap-4">
+              <div className="text-xs md:text-sm text-gray-400 text-center md:text-left">
                 Showing {indexOfFirstReport + 1} to {Math.min(indexOfLastReport, filteredReports.length)} of {filteredReports.length} reports
               </div>
               <div className="flex gap-2">
                 <button
                   onClick={handlePrevPage}
                   disabled={currentPage === 1}
-                  className={`px-4 py-2 rounded-lg ${
+                  className={`px-3 md:px-4 py-2 rounded-lg text-sm md:text-base ${
                     currentPage === 1
                       ? "bg-gray-700 text-gray-500 cursor-not-allowed"
                       : "bg-indigo-500 text-white hover:bg-indigo-600"
@@ -251,13 +253,13 @@ export default function AllReports() {
                 >
                   Previous
                 </button>
-                <span className="px-4 py-2 text-gray-300">
+                <span className="px-3 md:px-4 py-2 text-gray-300 text-sm md:text-base">
                   Page {currentPage} of {totalPages}
                 </span>
                 <button
                   onClick={handleNextPage}
                   disabled={currentPage === totalPages}
-                  className={`px-4 py-2 rounded-lg ${
+                  className={`px-3 md:px-4 py-2 rounded-lg text-sm md:text-base ${
                     currentPage === totalPages
                       ? "bg-gray-700 text-gray-500 cursor-not-allowed"
                       : "bg-indigo-500 text-white hover:bg-indigo-600"
