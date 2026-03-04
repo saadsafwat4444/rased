@@ -8,6 +8,7 @@ export default function MyReports() {
   const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
   const reportsPerPage = 10;
 
   useEffect(() => {
@@ -56,11 +57,19 @@ export default function MyReports() {
     fetchReports();
   }, []);
 
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm]);
+
   // Pagination logic
+  const filteredReports = reports.filter(report =>
+    report.description.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+  
   const indexOfLastReport = currentPage * reportsPerPage;
   const indexOfFirstReport = indexOfLastReport - reportsPerPage;
-  const currentReports = reports.slice(indexOfFirstReport, indexOfLastReport);
-  const totalPages = Math.ceil(reports.length / reportsPerPage);
+  const currentReports = filteredReports.slice(indexOfFirstReport, indexOfLastReport);
+  const totalPages = Math.ceil(filteredReports.length / reportsPerPage);
 
   // Pagination functions
   const handleNextPage = () => {
@@ -82,11 +91,21 @@ export default function MyReports() {
       </p>
     );
 
-  if (!reports.length)
+  if (!filteredReports.length)
     return (
-      <p className="text-center mt-10 text-gray-300">
-        No reports found.
-      </p>
+      <div className="text-center mt-10">
+        <p className="text-gray-300 mb-4">
+          {searchTerm ? "No reports found matching your search." : "No reports found."}
+        </p>
+        {searchTerm && (
+          <button
+            onClick={() => setSearchTerm("")}
+            className="text-indigo-400 hover:text-indigo-200 underline"
+          >
+            Clear search
+          </button>
+        )}
+      </div>
     );
 
   return (
@@ -94,6 +113,24 @@ export default function MyReports() {
       <h1 className="text-2xl md:text-3xl font-bold mb-6 text-center text-indigo-400">
         My Reports
       </h1>
+
+      {/* Search Bar */}
+      <div className="mb-6">
+        <div className="max-w-md mx-auto">
+          <input
+            type="text"
+            placeholder="Search by description..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full px-4 py-2 rounded-lg bg-gray-800 border border-gray-700 text-gray-100 placeholder-gray-400 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50"
+          />
+          {searchTerm && (
+            <div className="mt-2 text-center text-sm text-gray-400">
+              Found {filteredReports.length} report{filteredReports.length !== 1 ? "s" : ""} matching "{searchTerm}"
+            </div>
+          )}
+        </div>
+      </div>
 
       {/* Desktop Table */}
       <div className="hidden md:block overflow-x-auto">
@@ -217,10 +254,10 @@ export default function MyReports() {
       </div>
 
       {/* Pagination Controls */}
-      {reports.length > reportsPerPage && (
+      {filteredReports.length > reportsPerPage && (
         <div className="flex justify-between items-center mt-8">
           <div className="text-sm text-gray-400">
-            Showing {indexOfFirstReport + 1} to {Math.min(indexOfLastReport, reports.length)} of {reports.length} reports
+            Showing {indexOfFirstReport + 1} to {Math.min(indexOfLastReport, filteredReports.length)} of {filteredReports.length} reports
           </div>
           <div className="flex gap-2">
             <button

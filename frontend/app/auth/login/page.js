@@ -57,7 +57,7 @@ export default function Login() {
       const tokenResult = await user.getIdTokenResult();
       const role = tokenResult.claims.role || "user"; 
 
-      // redirect حسب الدور
+      // redirect based on role
       if (role === "admin") {
         router.push("/admin-dashboard");
       } else if (role === "supervisor") {
@@ -69,7 +69,7 @@ export default function Login() {
 
        
     }  catch (err) {
-  console.error("Firebase Auth Error Full:", err); // اطبع الكائن كله
+  console.error("Firebase Auth Error Full:", err); // print the full object
   console.error("Error Code:", err.code);
   console.error("Error Message:", err.message);
   setFirebaseError(err.message || "Email or password is incorrect");
@@ -82,13 +82,13 @@ export default function Login() {
     <div className="min-h-screen flex items-center justify-center bg-gray-900 p-4">
       <div className="max-w-md w-full bg-gray-800 shadow-xl rounded-2xl p-8 text-gray-100">
         <h2 className="text-3xl font-bold text-indigo-400 mb-6 text-center">
-          تسجيل الدخول
+          Login
         </h2>
 
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           <input
             type="email"
-            placeholder="البريد الإلكتروني"
+            placeholder="Email"
             value={email}
             onBlur={() => setTouched((prev) => ({ ...prev, email: true }))}
             onChange={(e) => setEmail(e.target.value)}
@@ -100,7 +100,7 @@ export default function Login() {
 
           <input
             type="password"
-            placeholder="كلمة المرور"
+            placeholder="Password"
             value={password}
             onBlur={() => setTouched((prev) => ({ ...prev, password: true }))}
             onChange={(e) => setPassword(e.target.value)}
@@ -124,12 +124,12 @@ export default function Login() {
         </form>
 
         <p className="mt-6 text-gray-400 text-center">
-          ليس لديك حساب؟{" "}
+          Don't have an account?{" "}
           <a
             href="/auth/register"
             className="text-indigo-400 hover:underline font-medium"
           >
-            سجل الآن
+            Register now
           </a>
         </p>
       </div>

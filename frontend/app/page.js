@@ -8,10 +8,10 @@ export default function Home() {
       {/* Header */}
       <div className="text-center max-w-2xl">
         <h1 className="text-5xl font-extrabold text-indigo-400 mb-4 drop-shadow-lg">
-          مرحبًا بك في منصة راصد
+          Welcome to Rased Platform
         </h1>
         <p className="text-gray-300 text-lg sm:text-xl mb-8">
-          منصة سهلة وسريعة للإبلاغ عن مشاكل محطات الكهرباء، متابعة البلاغات، وعرض التقارير بشكل واضح.
+          An easy and fast platform for reporting power station issues, tracking reports, and viewing reports clearly.
         </p>
       </div>
 
@@ -21,19 +21,19 @@ export default function Home() {
           className="bg-indigo-600 hover:bg-indigo-500 text-white px-8 py-4 rounded-lg shadow-lg transform transition-transform hover:-translate-y-1 hover:scale-105 duration-300"
           href="/auth/login"
         >
-          إنشاء بلاغ جديد
+          Create New Report
         </Link>
         <Link
           className="border border-indigo-500 text-indigo-400 px-8 py-4 rounded-lg shadow hover:bg-indigo-800 hover:text-white transform transition-transform hover:-translate-y-1 hover:scale-105 duration-300"
            href="/auth/login"
         >
-          عرض بلاغاتي
+          View My Reports
         </Link>
       </div>
 
       {/* Footer note */}
       <p className="mt-8 text-gray-400 text-sm text-center max-w-md">
-        جميع البلاغات يتم تسجيلها وتتبعها بشكل آمن وشفاف.
+        All reports are recorded and tracked securely and transparently.
       </p>
     </div>
   );
