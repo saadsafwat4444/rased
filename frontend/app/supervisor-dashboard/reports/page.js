@@ -617,7 +617,7 @@ export default function SupervisorReports() {
   const fetchStations = async () => {
     try {
       const user = auth.currentUser;
-      if (!user) return [];
+      if (!user) return []; 
 
       const token = await user.getIdToken();
       const res = await fetch("http://localhost:5555/stations", {
