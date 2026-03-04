@@ -246,7 +246,7 @@ export default function StationsPage() {
                   Edit
                 </button>
                 <button
-                 onClick={() => setDeleteStationId(station.id)}
+                 onClick={() => handleDelete(station.id)}
                   className="bg-red-500 px-3 py-1 rounded text-white"
                 >
                   Delete
