@@ -60,8 +60,7 @@ export default function Register() {
       });
 
       console.log("User document created successfully");
-
-      // حاول تعيين role ولكن لا تتوقف إذا فشل
+ 
       try {
         await fetch('/users/set-role', {
           method: 'POST',
@@ -88,7 +87,7 @@ export default function Register() {
         throw new Error("Failed to set token");
       }
 
-      // انتظر شوية للتأكد من تخزين التوكن
+      
       console.log("Waiting for cookie to be set...");
       await new Promise(resolve => setTimeout(resolve, 500));
 
