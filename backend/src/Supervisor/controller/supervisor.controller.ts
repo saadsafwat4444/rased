@@ -23,8 +23,8 @@ interface AddCommentDto {
 
 
 interface AssignDto {
-  userId: string; // الفني الذي سيتم التعيين له
-  email?: string; // Optional email for fallback
+  userId: string; 
+  email?: string;  
 }
 
 interface RequestWithUser extends Request {
@@ -43,7 +43,7 @@ interface CreateSupervisorDto {
   stationScope: string[];
 }
 
-@Controller('users') // endpoint base يكون /users
+@Controller('users')  
 export class SupervisorController {
   constructor(private readonly supervisorService: SupervisorService) {}
 

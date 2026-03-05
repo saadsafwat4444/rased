@@ -24,7 +24,7 @@ export default function NewReport() {
   const router = useRouter();
   const user = auth.currentUser;
 
-  // Fetch stations from Firestore
+   
   useEffect(() => {
     const fetchStations = async () => {
       try {
@@ -135,7 +135,7 @@ const handleSubmit = async (e) => {
 
     const token = await user.getIdToken();
 
-    // تجهيز payload
+     
     const reportPayload = {
       description,
       category,
@@ -148,7 +148,7 @@ const handleSubmit = async (e) => {
       mediaUrls,
     };
 
-    // ✅ console.log آمنة
+    
     if (reportPayload.stationScope && reportPayload.stationScope.length > 0) {
       console.log('Station ID type:', typeof reportPayload.stationScope[0]);
       console.log('Station ID value:', reportPayload.stationScope[0]);
@@ -157,8 +157,7 @@ const handleSubmit = async (e) => {
       console.log('Station ID type:', typeof reportPayload.stationId);
       console.log('Station ID value:', reportPayload.stationId);
     }
-
-    // إرسال البلاغ
+ 
     const result = await apiFetch('/reports', {
       method: 'POST',
       headers: {
@@ -168,7 +167,7 @@ const handleSubmit = async (e) => {
       body: JSON.stringify(reportPayload),
     });
 
-    // apiFetch بيرمي Error لو الـ status مش ok، فلو وصلنا هنا يبقى الطلب نجح
+    
     console.log("Report created:", result);
     await Swal.fire({
       icon: "success",

@@ -1,4 +1,4 @@
-"use client"; // لازم يكون أول سطر
+"use client";  
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -12,9 +12,9 @@ export default function ProtectedRoute({ allowedRoles = [], children }) {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (currentUser) => {
       if (!currentUser) {
-        router.replace("/auth/login"); // مش مسجل دخول → login
+        router.replace("/auth/login");  
       } else {
-        // جلب الـ custom claims (role + stationScope)
+        
         const tokenResult = await currentUser.getIdTokenResult(true);
         const role = tokenResult.claims.role || "user";
         const stationScope = tokenResult.claims.stationScope || [];
@@ -29,7 +29,7 @@ export default function ProtectedRoute({ allowedRoles = [], children }) {
 
         // تحقق من role
         if (allowedRoles.length > 0 && !allowedRoles.includes(role)) {
-          router.replace("/forbidden"); // مش من الـ roles المسموح
+          router.replace("/forbidden");  
         } else {
           setUser({ ...currentUser, role, stationScope });
         }
