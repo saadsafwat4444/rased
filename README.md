@@ -21,9 +21,7 @@ Next.js (App Router)
 
 Tailwind CSS + shadcn/ui
 
-Google Maps أو Mapbox
-
-Firebase Storage لرفع الوسائط
+ Mapbox  
 
 Backend
 
@@ -114,7 +112,7 @@ npm run dev
 cd backend
 npm install
 cp .env.example .env
-# ضع مفاتيح Firebase Admin و DB هنا
+
 npm run start:dev
 🔐 Default Admin Account
 
@@ -133,3 +131,4 @@ Backend: Railway
 Firebase: Firestore + Cloudinary Storage + Auth Firebase
 visit website:
 https://rased-qftd.vercel.app/
+
