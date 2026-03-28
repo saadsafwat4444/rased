@@ -75,16 +75,32 @@
 //       {address && (
 //         <div className="bg-gray-800 border border-gray-700 text-white placeholder-gray-400 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
 //           📍 <span className="font-semibold">العنوان:</span> {address}
-//         </div>
-//       )}
-//     </div>
-//   );
-// }
-
 "use client";
 
-import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
+import dynamic from "next/dynamic";
 import { useState, useEffect, useRef } from "react";
+
+// Dynamically import the map to avoid SSR issues
+const MapContainer = dynamic(
+  () => import("react-leaflet").then((mod) => mod.MapContainer),
+  { ssr: false }
+);
+
+const TileLayer = dynamic(
+  () => import("react-leaflet").then((mod) => mod.TileLayer),
+  { ssr: false }
+);
+
+const Marker = dynamic(
+  () => import("react-leaflet").then((mod) => mod.Marker),
+  { ssr: false }
+);
+
+const useMapEvents = dynamic(
+  () => import("react-leaflet").then((mod) => mod.useMapEvents),
+  { ssr: false }
+);
+
 import L from "leaflet";
 
 delete L.Icon.Default.prototype._getIconUrl;
@@ -98,7 +114,7 @@ L.Icon.Default.mergeOptions({
 });
 
 function LocationMarker({ location, setLocation }) {
-  useMapEvents({
+  const mapEvents = useMapEvents({
     click(e) {
       setLocation({ lat: e.latlng.lat, lng: e.latlng.lng });
     },
@@ -121,15 +137,16 @@ function LocationMarker({ location, setLocation }) {
 }
 
 export default function LeafletMap({ location, setLocation }) {
-  const mapRef = useRef();
+  const [mapReady, setMapReady] = useState(false);
   const [address, setAddress] = useState("");
+  const mapRef = useRef();
 
   // Force recenter map on location change
   useEffect(() => {
-    if (mapRef.current) {
+    if (mapRef.current && mapReady) {
       mapRef.current.setView([location.lat, location.lng], mapRef.current.getZoom());
     }
-  }, [location]);
+  }, [location, mapReady]);
 
   // Fetch address from reverseGeocode API
   useEffect(() => {
@@ -144,8 +161,22 @@ export default function LeafletMap({ location, setLocation }) {
         setAddress("");
       }
     };
-    fetchAddress();
-  }, [location]);
+    if (mapReady) {
+      fetchAddress();
+    }
+  }, [location, mapReady]);
+
+  useEffect(() => {
+    setMapReady(true);
+  }, []);
+
+  if (!mapReady) {
+    return (
+      <div className="w-full h-80 bg-gray-800 rounded-xl flex items-center justify-center">
+        <div className="text-white">Loading map...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-3">

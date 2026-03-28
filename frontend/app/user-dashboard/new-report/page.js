@@ -79,22 +79,39 @@ const handleStationChange = (e) => {
 
   useEffect(() => {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(async (position) => {
-        const lat = position.coords.latitude;
-        const lng = position.coords.longitude;
-        setLocation({ lat, lng });
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          setLocation({ lat, lng });
 
-        try {
-          const res = await fetch(`/api/reverseGeocode?lat=${lat}&lon=${lng}`);
-          const data = await res.json();
-          setLocationName(data.address || "Unknown");
-        } catch (err) {
-          console.error("Error fetching location name:", err);
-          setLocationName("Unknown");
+          try {
+            const res = await fetch(`/api/reverseGeocode?lat=${lat}&lon=${lng}`);
+            const data = await res.json();
+            setLocationName(data.address || "Unknown");
+          } catch (err) {
+            console.error("Error fetching location name:", err);
+            setLocationName("Unknown");
+          }
+        },
+        (error) => {
+          console.error("Geolocation error:", error);
+          // Use default location if geolocation fails
+          setLocation({ lat: 31.2, lng: 31.4 });
+          setLocationName("Default Location");
         }
-      });
+      );
+    } else {
+      console.log("Geolocation is not supported by this browser");
+      setLocation({ lat: 31.2, lng: 31.4 });
+      setLocationName("Default Location");
     }
   }, []);
+
+  useEffect(() => {
+    console.log("Location updated:", location);
+    console.log("Location name:", locationName);
+  }, [location, locationName]);
 
   const handleFileChange = (e) => {
     if (!e.target.files) return;
@@ -284,6 +301,13 @@ const handleSubmit = async (e) => {
           <div className="h-64 md:h-96 w-full rounded-xl overflow-hidden border border-gray-700">
             <LeafletMap location={location} setLocation={setLocation} />
           </div>
+
+          {/* Location Display */}
+          {locationName && (
+            <div className="bg-gray-800 border border-gray-700 text-white p-3 rounded-xl">
+              📍 <span className="font-semibold">Location:</span> {locationName}
+            </div>
+          )}
 
           {/* Submit Button */}
           <button
