@@ -299,17 +299,17 @@ const handleSubmit = async (e) => {
             />
           </div>
 
-          {/* Map */}
-          <div className="h-64 md:h-96 w-full rounded-xl overflow-hidden border border-gray-700">
-            <LeafletMap location={location} setLocation={setLocation} />
-          </div>
-
           {/* Location Display */}
           {locationName && (
             <div className="bg-gray-800 border border-gray-700 text-white p-3 rounded-xl">
               📍 <span className="font-semibold">Location:</span> {locationName}
             </div>
           )}
+
+          {/* Map */}
+          <div className="h-64 md:h-96 w-full rounded-xl overflow-hidden border border-gray-700">
+            <LeafletMap location={location} setLocation={setLocation} />
+          </div>
 
           {/* Submit Button */}
           <button
