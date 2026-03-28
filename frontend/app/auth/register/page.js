@@ -60,6 +60,8 @@ export default function Register() {
       });
 
       console.log("User document created successfully");
+
+
  
       try {
         await fetch('/users/set-role', {
@@ -70,7 +72,10 @@ export default function Register() {
         console.log("Role set successfully");
       } catch (roleErr) {
         console.log("Role setting failed, but continuing:", roleErr);
+
       }
+
+      
 
       const token = await user.getIdToken(true);
       console.log("Got token:", token.substring(0, 20) + "...");

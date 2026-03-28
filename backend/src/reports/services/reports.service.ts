@@ -68,7 +68,7 @@ export class ReportsService {
 
     const docRef = await this.reportsCollection.add(newReport);
 
-    // 👇 تسجيل Event بعد الإنشاء
+    
     await this.logEvent({
       reportId: docRef.id,
       action: 'created',
