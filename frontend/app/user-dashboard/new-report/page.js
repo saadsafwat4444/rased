@@ -83,11 +83,13 @@ const handleStationChange = (e) => {
         async (position) => {
           const lat = position.coords.latitude;
           const lng = position.coords.longitude;
+          console.log("Got location from GPS:", lat, lng);
           setLocation({ lat, lng });
 
           try {
             const res = await fetch(`/api/reverseGeocode?lat=${lat}&lon=${lng}`);
             const data = await res.json();
+            console.log("Reverse geocode response:", data);
             setLocationName(data.address || "Unknown");
           } catch (err) {
             console.error("Error fetching location name:", err);
